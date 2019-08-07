@@ -1,0 +1,11 @@
+name = "CINEload"
+uuid = "304d1591-9c25-496b-bcbb-282ae1317f78"
+authors = ["Galen Burke <mgburke@wisc.edu>"]
+version = "0.1.0"
+
+[deps]
+DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+ImageCore = "a09fc81d-aa75-5fe9-8630-4744c3626534"
+ProgressMeter = "92933f4c-e287-5a05-a399-4b506db050ca"
+TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"
