@@ -2,7 +2,7 @@ module CINEload
 
 using ImageCore, ProgressMeter, DataStructures, Dates, TimeZones
 
-export readcine, readframe
+export readcine, readframe, cineheader
 
 include("readcine.jl")
 
