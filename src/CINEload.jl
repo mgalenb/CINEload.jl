@@ -1,6 +1,9 @@
 module CINEload
 
-using ImageCore, ProgressMeter, DataStructures, Dates, TimeZones
+using FixedPointNumbers:  N0f8, N4f12
+using DataStructures: OrderedDict
+using ProgressMeter: @showprogress
+using Dates, TimeZones
 
 export readcine, readframe, cineheader
 

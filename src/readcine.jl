@@ -266,6 +266,7 @@ function cineheader(fname)
         end
 =#
         h[:BitType] = h[:BitDepth] == 8 ? N0f8 : N4f12 #Gray{N0f8} : Gray{N4f12}
+		#Phantom CINE frames loaded as FixedPointNumbers and not as Gray{} type. Gray{} type is interpreted in Juno and IJulia to indicate an Array is an image and should be plotted as an such, if `Images` is loaded. Use Gray.(img) to convert FixedPointNumbers to Gray{FixedPointNumbers}, which will be shown as an image.
 
         numframes = h[:ImCount]
         numframes > 0 || error("no images exist in file")
@@ -304,7 +305,7 @@ function cineheader(fname)
 		h[:frameExposure] = exposure
     end
 
-    h[:Tmp] = Array{h[:BitType]}(undef, h[:Width], h[:Height])
+    h[:Tmp] = Array{h[:BitType]}(undef, h[:Height], h[:Width])
 
     return h
 end
@@ -314,11 +315,11 @@ function readframe!(f::IO, frame, h, frameidx)
     seek(f, h[:ImLocs][frameidx])
     skip(f, read(f, UInt32) - 4)
     read!(f, h[:Tmp])
-    frame .= rotl90(h[:Tmp])
+    frame .= h[:Tmp] #rotl90(h[:Tmp])
 end
 
 readframe!(fname, frame, h, frameidx) = open(f -> readframe!(f, frame, h, frameidx), fname)
-readframe(f, h, frameidx) = readframe!(f, rotl90(h[:Tmp]), h, frameidx)
+readframe(f, h, frameidx) = readframe!(f, h[:Tmp], h, frameidx) #rotl90(h[:Tmp])
 
 function readframe(f, h, frameidxs::AbstractVector{Int})
     img = similar(h[:Tmp], h[:Height], h[:Width], length(frameidxs))
