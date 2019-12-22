@@ -305,7 +305,7 @@ function cineheader(fname)
 		h[:frameExposure] = exposure
     end
 
-    h[:Tmp] = Array{h[:BitType]}(undef, h[:Height], h[:Width])
+    h[:Tmp] = Array{h[:BitType]}(undef, h[:Width], h[:Height])
 
     return h
 end
@@ -315,11 +315,11 @@ function readframe!(f::IO, frame, h, frameidx)
     seek(f, h[:ImLocs][frameidx])
     skip(f, read(f, UInt32) - 4)
     read!(f, h[:Tmp])
-    frame .= h[:Tmp] #rotl90(h[:Tmp])
+    frame .= rotl90(h[:Tmp])
 end
 
 readframe!(fname, frame, h, frameidx) = open(f -> readframe!(f, frame, h, frameidx), fname)
-readframe(f, h, frameidx) = readframe!(f, h[:Tmp], h, frameidx) #rotl90(h[:Tmp])
+readframe(f, h, frameidx) = readframe!(f, rotl90(h[:Tmp]), h, frameidx)
 
 function readframe(f, h, frameidxs::AbstractVector{Int})
     img = similar(h[:Tmp], h[:Height], h[:Width], length(frameidxs))
