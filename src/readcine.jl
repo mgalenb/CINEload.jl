@@ -323,7 +323,7 @@ readframe(f, h, frameidx) = readframe!(f, rotl90(h[:Tmp]), h, frameidx)
 
 function readframe(f, h, frameidxs::AbstractVector{Int})
     img = similar(h[:Tmp], h[:Height], h[:Width], length(frameidxs))
-    for (i, frameidx) in enumerate(frameidxs)
+    for (i, fidx) in enumerate(frameidxs)
         frame = @view img[:,:,i]
         readframe!(f, frame, h, fidx)
     end
