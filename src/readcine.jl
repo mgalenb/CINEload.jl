@@ -330,6 +330,19 @@ function readframe(f, h, frameidxs::AbstractVector{Int})
     return img
 end
 
+function readframe(fname::String, frameidxs::AbstractVector{Int})
+	h = cineheader(fname)
+	img = similar(h[:Tmp], h[:Height], h[:Width], length(frameidxs))
+	open(fname) do f
+		for (i, fidx) in enumerate(frameidxs)
+			frame = @view img[:,:,i]
+			readframe!(f, frame, h, fidx)
+		end
+	end
+
+	return img
+end
+
 function readcine(fname)
     h = cineheader(fname)
     img = Array{h[:BitType]}(undef, h[:Height], h[:Width], h[:ImCount])
